@@ -1,6 +1,8 @@
 var express = require('express');
 var app = express();
 // var Signer = require('goinstant-auth').Signer;
+var arDrone = require('ar-drone');
+var client = arDrone.createClient();
 
 app.use(express.bodyParser());
 
@@ -10,20 +12,22 @@ reset = true;
 
 app.post('/heartbeat', function(req, res) {
     var heartbeat = req.body.heartbeat;
+    console.log(heartbeat);
+    if (heartbeat && heartbeat.length) {
+        if (isNewHeartbeatRecording(heartbeat) && !reset)
+            resetHeartbeatTracking()
+        else {
+            heartbeats.push(heartbeat);
+            reset = false;
 
-    if (isNewHeartbeatRecording(heartbeat) && !reset)
-        resetHeartbeatTracking()
-    else {
-        heartbeats.push(heartbeat);
-        reset = false;
-
-        if (isPanicHeartbeat(heartbeat)) {
-            console.log("Activating drone.");
-            // activateDroneForRescue();
-        } else
-            console.log("Heartbeat stable: ", heartbeat);
+            if (isPanicHeartbeat(heartbeat)) {
+                console.log("Activating drone.");
+                activateDroneForRescue();
+            } else
+                console.log("Heartbeat stable: ", heartbeat);
+        }
     }
-
+    res.set("Connection", "close");
     res.end();
 });
 
@@ -32,12 +36,15 @@ var isNewHeartbeatRecording = function(heartbeat) {
 }
 
 var isPanicHeartbeat = function(heartbeat) {
+    if(heartbeat > 700)
+        return true;
+    else
+        return false;
     // for (var counter = 0; heartbeat > 700 && heartbeat < 900; counter++) {
     //     if (counter > 500)
     //         return true;
     // }
     // return false;
-    return true;
 }
 
 var resetHeartbeatTracking = function() {
@@ -47,15 +54,23 @@ var resetHeartbeatTracking = function() {
 }
 
 var activateDroneForRescue = function() {
+    // if(isInAir)
+    //     return;
+    // isInAir = true;
     console.log("Sending takeoff command.");
     client.takeoff(function() {
         console.log("Drone lift off.");
     });
-
+    client.after(2000, function(){
+        this.front(.6);
+    });
     client
         .after(3500, function() {
             this.stop();
-            this.land();
+            this.land(function(){
+                console.log("LANDING");
+                isInAir = false;
+            });
         });
 }
 
