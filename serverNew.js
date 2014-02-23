@@ -39,8 +39,12 @@ app.post('/heartbeat', function(req, res) {
 });
 
 var isPanicHeartbeat = function(heartbeat) {
-    //TODO FIGURE IT OUT
-    return false;
+	for(var counter = 0;heartbeat>700 && heartbeat<900;counter++)
+	{
+    	if (counter > 500)
+    		return true;
+    }
+	return false;
 }
 
 var activateDroneForRescue = function() {
