@@ -21,10 +21,32 @@ serialPort.on("open", function() {
         var newValue = parseInt(data.toString()
             .trim());
 
-
+		if(newValue>600)
+			sendTrilioText(newValue);
+			
         fs.appendFile('heartbeat.txt', '\n'+newValue, function(err) {
             if (err) throw err;
             console.log('Orig ' + data.toString() + ' New ' + newValue);
         });
     });
 });
+
+SENT_TEXT = false;
+var sendTrilioText = function(value){
+	if(SENT_TEXT)
+		return;
+	SENT_TEXT = true;
+	var sys = require('sys')
+	var exec = require('child_process').exec;
+	var child;
+ 
+	child = exec("php twilio-php-master/sendnotifications.php", function (error, stdout, stderr) {
+	sys.print('stdout: ' + stdout);
+
+	sys.print('stderr: ' + stderr);
+
+	if (error !== null) {
+		console.log('exec error: ' + error);
+	}
+});
+}

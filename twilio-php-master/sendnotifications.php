@@ -29,6 +29,7 @@
 		"+12266003925" => "Yousef",
 		"+15146555782" => "Mo",
 		"+15195804214" => "Kartthik",
+		"+12019531983" => "doug",
 	);
 
 	// Step 5: Loop over all our friends. $number is a phone number above, and 
@@ -45,7 +46,7 @@
 			$number,
 
 			// the sms body
-			"Hey $name, Monkey Party at 11AM. Bring Bananas!"
+			"Hey $name, Air Drone activated. Sending drone to patient."
 		);
 
 		// Display a confirmation message on the screen
