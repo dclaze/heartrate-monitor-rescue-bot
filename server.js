@@ -17,7 +17,7 @@ app.post('/heartbeat', function(req, res) {
         if (isNewHeartbeatRecording(heartbeat) && !reset)
             resetHeartbeatTracking()
         else {
-            heartbeats.push(heartbeat);
+            updateHeartbeatsArray(heartbeat);
             reset = false;
 
             if (isPanicHeartbeat(heartbeat)) {
@@ -30,6 +30,11 @@ app.post('/heartbeat', function(req, res) {
     res.set("Connection", "close");
     res.end();
 });
+
+var updateHeartbeatsArray = function(heartbeat){
+    heartbeats.push(heartbeat);
+    heartbeats.unshift();
+}
 
 var isNewHeartbeatRecording = function(heartbeat) {
     return heartbeat == 0;
