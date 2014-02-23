@@ -1,46 +1,49 @@
 var express = require('express');
 var app = express();
-var Signer = require('goinstant-auth').Signer;
-var signer = new Signer("JTPqdOS2lhs7MwrCqwQlylzHX-qNsILq6C9zNQgN83DfO4jJMPM6HpRXWWpiwv9okWPjtywJSPHNfgErw7NgOQ");
+// var Signer = require('goinstant-auth').Signer;
 
 app.use(express.bodyParser());
 
-//app.get('/startup', function(req, res) {
-//    res.send("TOKEN")
-    // var userId = req.query.userId;
-    // var userName = req.query.userName;
-    // signer.sign({
-    //     domain: 'localhost',
-    //     id: userId,
-    //     displayName: userName,
-    //     groups: [{
-    //         id: 'room-' + 'heartbeat',
-    //         displayName: 'Heartbeat Monitor'
-    //     }]
-    // }, function(err, token) {
-    //     if (err) {
-    //         res.status(500);
-    //         res.send("Unable to grant user token" + " "+ err);
-    //     }
-    //     res.send(token);
-    // });
-//});
+heartbeatCounter = 0;
+heartbeats = [];
+reset = true;
 
 app.post('/heartbeat', function(req, res) {
     var heartbeat = req.body.heartbeat;
-    if (isPanicHeartbeat(heartbeat)){
-        console.log("Activating drone.")
-        activateDroneForRescue();
+
+    if (isNewHeartbeatRecording(heartbeat) && !reset)
+        resetHeartbeatTracking()
+    else {
+        heartbeats.push(heartbeat);
+        reset = false;
+
+        if (isPanicHeartbeat(heartbeat)) {
+            console.log("Activating drone.");
+            // activateDroneForRescue();
+        } else
+            console.log("Heartbeat stable: ", heartbeat);
     }
-    else
-        console.log("Heartbeat stable: ", heartbeat);
 
     res.end();
 });
 
+var isNewHeartbeatRecording = function(heartbeat) {
+    return heartbeat == 0;
+}
+
 var isPanicHeartbeat = function(heartbeat) {
-    //TODO FIGURE IT OUT
-    return false;
+    // for (var counter = 0; heartbeat > 700 && heartbeat < 900; counter++) {
+    //     if (counter > 500)
+    //         return true;
+    // }
+    // return false;
+    return true;
+}
+
+var resetHeartbeatTracking = function() {
+    heartbeatCounter = 0;
+    heartbeats = [];
+    reset = true;
 }
 
 var activateDroneForRescue = function() {
