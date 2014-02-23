@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Rescue Bot Control</title>
+    <script src="https://cdn.goinstant.net/v1/platform.min.js"></script>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
+    <script src="app.js"></script>
+    <script src="heartbeat.js"></script>
+    <script src="heartbeatGraph.js"></script>
+    <script src="guid.js"></script>
+    <script src="goInstantService.js"></script>
+</head>
+
+<head>
+
+</head>
+
+<style>
+svg {
+    font: 10px sans-serif;
+}
+.line, .axis{
+    opacity: .1;
+}
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+</style>
+
+<body ng-app="drone-control">
+    <div>
+        <button>Move Direction</button>
+    </div>
+    <div ng-controller="Visualizer">
+        <div heartbeat-graph source="source" graph-width="40"></div>
+    <div>
+</body>
+
+</html>

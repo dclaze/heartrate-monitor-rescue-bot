@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+
+<head>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular.min.js"></script>
+    <script src="heartbeat.js"></script>
+    <script src="heartbeatGraph.js"></script>
+    <script src="goInstantService.js"></script>
+    
+</head>
+<style>
+svg {
+    font: 10px sans-serif;
+}
+.line {
+    fill: none;
+    stroke: #000;
+    stroke-width: 1.5px;
+}
+.axis path, .axis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+</style>
+
+<body ng-app="heartbeat" ng-controller="Visualizer">
+    <div heartbeat-graph source="source" graph-width="40"></div>
+</body>
+
+</html>
