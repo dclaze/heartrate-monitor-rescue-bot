@@ -5,8 +5,8 @@ var signer = new Signer("JTPqdOS2lhs7MwrCqwQlylzHX-qNsILq6C9zNQgN83DfO4jJMPM6HpR
 
 app.use(express.bodyParser());
 
-app.get('/startup', function(req, res) {
-    res.send("TOKEN")
+//app.get('/startup', function(req, res) {
+//    res.send("TOKEN")
     // var userId = req.query.userId;
     // var userName = req.query.userName;
     // signer.sign({
@@ -24,7 +24,7 @@ app.get('/startup', function(req, res) {
     //     }
     //     res.send(token);
     // });
-});
+//});
 
 app.post('/heartbeat', function(req, res) {
     var heartbeat = req.body.heartbeat;
