@@ -21,7 +21,7 @@ serialPort.on("open", function() {
         var newValue = parseInt(data.toString()
             .trim());
 
-		if(newValue>600)
+		if(newValue>775)
 			sendTrilioText(newValue);
 			
         fs.appendFile('heartbeat.txt', '\n'+newValue, function(err) {
